@@ -1,5 +1,7 @@
 require 'open-uri'
 require 'nokogiri'
+#require 'rubyzip'
+require 'odf-report'
 
 puts "Alivoy 0.1 BETA"
 
@@ -37,3 +39,15 @@ party = page.css('a#ctl00_cphContent_repMP_ctl00_lnkParty').text
 puts "\n\n"
 
 puts "Your Member of Parliament is #{mpname} (#{party}) in the #{riding} riding."
+
+report = ODFReport::Report.new("./testdoc1.odt") do |r|
+	r.add_field :name, name
+	r.add_field :streetnum, streetnum
+	r.add_field :city, city
+	r.add_field :province, province
+	r.add_field :postalcode, postalcode
+	r.add_field :mpname, mpname
+
+end
+
+report.generate("./Reports/output.odf")
